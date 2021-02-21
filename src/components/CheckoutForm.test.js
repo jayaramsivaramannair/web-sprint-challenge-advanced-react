@@ -13,20 +13,32 @@ test("form shows success message on submit with form details", async () => {
     render(<CheckoutForm />);
 
     //Arrange Phase of the Test - This lets us arrange the inputs to be entered into the form
-    const firstNameInput = "Jay";
-    const lastNameInput = "Nair";
+    const firstNameInput = "Alice";
+    const lastNameInput = "Smith";
     const addressInput = "10 Alice Way";
-    const cityInput = "Wonderland";
+    const cityInput = "The Shire";
     const stateInput = "Nowhere";
     const zipInput = "10000";
 
     //Act Phase of the Test
-    fireEvent.input(screen.getByLabelText('First Name:'), firstNameInput);
-    fireEvent.input(screen.getByLabelText('Last Name:'), lastNameInput);
-    fireEvent.input(screen.getByLabelText('Address:'), addressInput);
-    fireEvent.input(screen.getByLabelText('City:'), cityInput);
-    fireEvent.input(screen.getByLabelText('State:'), stateInput);
-    fireEvent.input(screen.getByLabelText('Zip:'), zipInput);
+    fireEvent.change(screen.getByLabelText('First Name:'), { target: { value: firstNameInput } });
+    fireEvent.change(screen.getByLabelText('Last Name:'), { target: { value: lastNameInput } });
+    fireEvent.change(screen.getByLabelText('Address:'), { target: { value: addressInput } });
+    fireEvent.change(screen.getByLabelText('City:'), { target: { value: cityInput } });
+    fireEvent.change(screen.getByLabelText('State:'), { target: { value: stateInput } });
+    fireEvent.change(screen.getByLabelText('Zip:'), { target: { value: zipInput } });
     fireEvent.click(screen.getByRole('button'));
+
+    const successMessage = "You have ordered some plants! Woo-hoo! Your new green friends will be shipped to:";
+
+    const paragraphs = screen.findByRole('paragraph');
+
+    paragraphs.then((para) => {
+        expect(para).toBeInTheDocument;
+        expect(para).toHaveDisplayValue("I am great!");
+    })
+        .catch((err) => {
+            console.log(err);
+        })
 
 });
